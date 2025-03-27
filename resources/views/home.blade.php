@@ -7,13 +7,15 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .nav-link.active {
-            border-color: #3b82f6;
-            color: #3b82f6;
+            border-left: 3px solid #0d6efd;
+            color: #0d6efd !important;
+            padding-left: calc(0.5rem - 3px);
         }
         html {
             scroll-behavior: smooth;
@@ -25,28 +27,28 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased bg-gray-100">
-    <div class="min-h-screen">
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center py-4">
-                    <h1 class="text-2xl font-bold text-gray-900">{{ config('app.name', 'Laravel') }}</h1>
+<body class="bg-light">
+    <div class="min-vh-100 d-flex flex-column">
+        <header class="bg-white shadow-sm">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center py-3">
+                    <h1 class="h3 mb-0">{{ config('app.name', 'Laravel') }}</h1>
                 </div>
             </div>
         </header>
 
-        <main>
-            <div class="py-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="flex flex-col md:flex-row gap-8">
+        <main class="flex-grow-1">
+            <div class="py-4">
+                <div class="container">
+                    <div class="row g-4">
                         @if(count($sections) > 0)
-                        <div class="md:w-1/4 lg:w-1/5">
-                            <div class="bg-white p-4 rounded-lg shadow sidebar-nav">
-                                <h2 class="text-lg font-semibold mb-3 border-b pb-2">Daftar Isi</h2>
-                                <nav class="flex flex-col space-y-2">
+                        <div class="col-md-3">
+                            <div class="bg-white p-3 rounded shadow-sm sidebar-nav">
+                                <h2 class="h6 mb-3 pb-2 border-bottom">Daftar Isi</h2>
+                                <nav class="nav flex-column">
                                     @foreach($sections as $section)
                                         <a href="#section-{{ $section->id }}" 
-                                           class="nav-link px-3 py-2 text-sm font-medium rounded-md border-l-4 border-transparent hover:text-blue-600 hover:border-blue-600 transition-all">
+                                           class="nav-link text-dark mb-2 ps-3">
                                             {{ $section->title }}
                                         </a>
                                     @endforeach
@@ -55,14 +57,11 @@
                         </div>
                         @endif
                         
-                        <div class="{{ count($sections) > 0 ? 'md:w-3/4 lg:w-4/5' : 'w-full' }}">
+                        <div class="{{ count($sections) > 0 ? 'col-md-9' : 'col-12' }}">
                             @foreach($sections as $section)
-                                <div id="section-{{ $section->id }}" class="bg-white overflow-hidden shadow-sm rounded-lg mb-6 scroll-mt-8">
-                                    <div class="p-6 bg-white border-b border-gray-200">
-                                        <h2 class="text-1xl font-semibold mb-4">{{ $section->title }}</h2>
-                                        {{-- @if($section->description)
-                                            <p class="text-gray-600 mb-6">{{ $section->description }}</p>
-                                        @endif --}}
+                                <div id="section-{{ $section->id }}" class="bg-white shadow-sm rounded mb-4 scroll-margin-top-4">
+                                    <div class="p-4 border-bottom">
+                                        <h2 class="h6 mb-3">{{ $section->title }}</h2>
                                         
                                         @if($section->content_type === 'App\\Models\\ProfileCard')
                                             @include('sections.profile_card', ['profileCard' => $section->content])
@@ -82,13 +81,15 @@
             </div>
         </main>
         
-        <footer class="bg-white shadow mt-auto">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-gray-500">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}</p>
+        <footer class="bg-white shadow-sm mt-auto">
+            <div class="container py-3">
+                <p class="text-center text-muted mb-0">&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}</p>
             </div>
         </footer>
     </div>
 
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sections = document.querySelectorAll('[id^="section-"]');

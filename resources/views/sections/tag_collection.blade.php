@@ -1,16 +1,16 @@
 <div>
     @if($tagCollection->description)
-        <p class="text-gray-600 mb-4">{{ $tagCollection->description }}</p>
+        <p class="text-muted mb-4">{{ $tagCollection->description }}</p>
     @endif
 
-    <div class="flex flex-wrap gap-2">
+    <div class="d-flex flex-wrap gap-2">
         @forelse($tagCollection->tags as $tag)
-            <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium" 
-                style="background-color: {{ $tag->color }}20; color: {{ $tag->color }};">
+            <span class="badge rounded-pill px-3 py-2" 
+                style="background-color: {{ $tag->color }}20; color: {{ $tag->color }}; border: 1px solid {{ $tag->color }};">
                 {{ $tag->name }}
             </span>
         @empty
-            <p class="text-gray-500 italic">Belum ada tag tersedia.</p>
+            <p class="text-muted fst-italic">Belum ada tag tersedia.</p>
         @endforelse
     </div>
 </div> 
