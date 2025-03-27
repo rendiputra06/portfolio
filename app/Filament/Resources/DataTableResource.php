@@ -1,0 +1,96 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\DataTableResource\Pages;
+use App\Filament\Resources\DataTableResource\RelationManagers;
+use App\Models\DataTable;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class DataTableResource extends Resource
+{
+    protected static ?string $model = DataTable::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
+
+    protected static ?string $navigationGroup = 'Section Content';
+
+    protected static ?int $navigationSort = 3;
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('title')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('description')
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\Repeater::make('columns')
+                    ->schema([
+                        Forms\Components\TextInput::make('key')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('label')
+                            ->required()
+                            ->maxLength(255),
+                    ])
+                    ->columns(2)
+                    ->required()
+                    ->columnSpanFull(),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('rows_count')
+                    ->label('Rows')
+                    ->counts('rows'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\RowsRelationManager::class,
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListDataTables::route('/'),
+            'create' => Pages\CreateDataTable::route('/create'),
+            'edit' => Pages\EditDataTable::route('/{record}/edit'),
+        ];
+    }
+}
